@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<body>
+<head>
+
+</head>
+
+<div id="main" style="height:300px"></div>
+
+<script src="../../static/js/echarts.source.js"></script>
+<script src="/static/js/jquery-1.11.3.min.js"></script>  <!-- 必要的js文件，jquery版本随意，1.4以上即可。 -->
+<script src="/static/js/tools.js"></script>
+
+<script type="text/javascript">
+            var yonghu;
+            var yonghubianhua;
+            var qitianzhoushi;
+            var dangtianxinzeng;
+            if(currentLang.indexOf("en") > -1 )
+            {
+                yonghu="User"
+                yonghubianhua="user changes"
+                qitianzhoushi="New Registers in 7 Days"
+                dangtianxinzeng="New Registers the same day"
+            }
+            else{
+                yonghu="用户"
+                qitianzhoushi="近7天用户增长走势"
+                dangtianxinzeng="当天增量"
+                yonghubianhua="用户变化"
+            }
+</script>
+
+<script type="text/javascript">
+
+
+
+var myChart = echarts.init(document.getElementById('main'));
+var day=[];
+var count=[];
+option = {
+    title : {
+        text: yonghu,
+        subtext: yonghubianhua
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:[qitianzhoushi]
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : this.day
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            axisLabel : {
+                formatter: '{value} '
+            }
+        }
+    ],
+    series : [
+        {
+            name:dangtianxinzeng,
+            type:'line',
+            data:this.count,
+            markPoint : {
+                data : [
+                    {type : 'max', name: 'Max'},
+                    {type : 'min', name: 'Min'}
+                ]
+            }
+        }
+    ]
+};
+
+function setData(dayx,countx){
+    option.xAxis[0].data=dayx;
+    option.series[0].data=countx;
+    myChart.setOption(option);
+}
+
+
+ function getjson(){
+        $.getJSON('/ajax/user/7d', {}, function($jsondata) {
+            //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+            //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+            var $str_html = "<table><tr><th>映像名称</th><th>PID</th><th>会话名</th><th>会话#</th><th>内存使用</th></tr>";
+            option.xAxis[0].data=$jsondata.day;
+            option.series[0].data=$jsondata.count;
+            myChart.setOption(option);
+            console.log('=================');
+            console.log($jsondata);
+            console.log(option);
+            myChart.setOption(option);
+
+        });
+    }
+$(function(){
+        getjson();  //初始化获取数据
+        $("#start").attr({disabled: 'disabled'});
+        var $timebreak = 2000; //单位:ms
+        var mytime = setInterval(function(){getjson()}, $timebreak); //通过setInterval设置超时执行函数
+        $("#start").click(function(event) {
+            mytime = setInterval(function(){getjson()}, $timebreak); //点击start按钮开始每$timebreak毫秒刷新json的数据
+            $("#start").attr({disabled: 'disabled'});
+            $("#stop").removeAttr('disabled');
+        });
+        $("#stop").click(function(event) {
+            clearInterval(mytime); //清除setInterval设置达到停止计数器的效果
+            $("#stop").attr({disabled: 'disabled'});
+            $("#start").removeAttr('disabled');
+        });
+
+})
+
+
+
+
+
+</script>
+
+
+<!--<img border="0" src="../../static/img/log.gif" style="display:none" align="" width="15" height="15"-->
+<!--onerror="setData({{day}},{{count}})">-->
+
+</body>
+</html>

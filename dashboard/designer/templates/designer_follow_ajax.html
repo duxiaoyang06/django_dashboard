@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/static/js/jquery-1.11.3.min.js"></script>  <!-- 必要的js文件，jquery版本随意，1.4以上即可。 -->
+    <script src="/static/js/tools.js"></script>
+
+    <div id="main" style="height:900px"></div>
+
+    <span style="white-space:pre">    </span><title>RealTime Test</title>
+    <span style="white-space:pre">    </span>
+    <meta charset="utf-8">
+    <span style="white-space:pre">    </span>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <span style="white-space:pre">    </span>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <span style="white-space:pre">    </span>
+    <meta name="author" content="sam">
+    <span style="white-space:pre">    </span>
+
+    <span style="white-space:pre">    </span>
+    <script src="../../static/js/echarts.source.js"></script>
+
+<div>
+    <script type="text/javascript">
+          var legend;
+            if(currentLang.indexOf("en") > -1 )
+            {
+                legend="Designer Follow"
+            }
+            else
+            {
+                legend="Designer Follow"
+            }
+
+var myChart = echarts.init(document.getElementById('main'));
+var designer=[];
+var count=[];
+var placeHoledStyle = {
+    normal:{
+        barBorderColor:'rgba(0,0,0,0)',
+        color:'rgba(0,0,0,0)'
+    },
+    emphasis:{
+        barBorderColor:'rgba(0,0,0,0)',
+        color:'rgba(0,0,0,0)'
+    }
+};
+var dataStyle = {
+    normal: {
+        label : {
+            show: true,
+            position: 'insideLeft',
+            formatter: '{c}'
+        }
+    }
+};
+option = {
+    title : {
+        text: this.legend,
+        subtext: 'data from database'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['Designer Follow']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'value',
+            boundaryGap : [0, 5]
+        }
+    ],
+    yAxis : [
+        {
+            type : 'category',
+            data :this.designer
+        }
+    ],
+    series : [
+        {
+            name:'2011年',
+            type:'bar',
+            data:this.count
+        }
+    ]
+};
+
+    function getjson(){
+
+        $.getJSON('/ajax/designer/follow', {}, function($jsondata) {
+            //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+            //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+                var $str_html = "<table><tr><th>映像名称</th><th>PID</th><th>会话名</th><th>会话#</th><th>内存使用</th></tr>";
+
+            console.log($jsondata);
+            option.yAxis[0].data=$jsondata.designer_nickname;
+            console.log($jsondata.follow_count);
+            option.series[0].data=$jsondata.follow_count;
+            this.count=$jsondata.follow_count;
+
+            myChart.setOption(option);
+
+        });
+    }
+$(function(){
+
+        $("#start").attr({disabled: 'disabled'});
+        var $timebreak = 5000; //单位:ms
+        var mytime = setInterval(function(){getjson()}, $timebreak); //通过setInterval设置超时执行函数
+        $("#start").click(function(event) {
+            mytime = setInterval(function(){getjson()}, $timebreak); //点击start按钮开始每$timebreak毫秒刷新json的数据
+            $("#start").attr({disabled: 'disabled'});
+            $("#stop").removeAttr('disabled');
+        });
+        $("#stop").click(function(event) {
+            clearInterval(mytime); //清除setInterval设置达到停止计数器的效果
+            $("#stop").attr({disabled: 'disabled'});
+            $("#start").removeAttr('disabled');
+        });
+
+})
+
+
+    </script>
+
+<select id="select" onkeydown="Select.del(this,event)" onkeypress="Select.write(this,event)">
+<option value=""></option>
+</select>
+
+<script type="text/javascript">
+
+var designer=[];
+var designerId=[];
+var count2=[];
+     $.getJSON('/ajax/designer/follow', {}, function($jsondata) {
+            //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+            //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+            var $str_html = "<table><tr><th>映像名称</th><th>PID</th><th>会话名</th><th>会话#</th><th>内存使用</th></tr>";
+            this.count2=$jsondata.designer_nickname;
+            this.designerId=$jsondata.designer_id;
+            var sel = document.getElementById('select');
+            for(var i=0;i<this.count2.length;i++){
+                var opt = document.createElement("option");
+                opt.value = this.designerId[i];
+                opt.innerHTML = this.count2[i];
+                sel.appendChild(opt);
+                document.body.appendChild(sel);
+            }
+        });
+</script>
+<script type="text/javascript">
+var Select = {
+del : function(obj,e){
+if((e.keyCode||e.which||e.charCode) == 8){
+var opt = obj.options[0];
+opt.text = opt.value = opt.value.substring(0, opt.value.length>0?opt.value.length-1:0);
+}
+},
+write : function(obj,e){
+if((e.keyCode||e.which||e.charCode) == 8)return ;
+var opt = obj.options[0];
+opt.selected = "selected";
+opt.text = opt.value += String.fromCharCode(e.charCode||e.which||e.keyCode);
+}
+}
+function follow_trend(){
+designerId=document.getElementById("select").value;
+
+window.open('designerajaxtrend/'+designerId,'height=600,width=900,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+}
+</script>
+    <input type="button" value="See recent trend" id="recent_follow_trend" onclick="follow_trend();"/>
+
+</div>
+</head>
+<body>
+<!--<button id="start">start</button>-->
+<!--<button id="stop">stop</button>-->
+<!--<p id="json">tasklist</p>-->
+</body>
+</html>

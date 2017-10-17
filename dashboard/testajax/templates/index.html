@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<span style="white-space:pre">    </span><title>RealTime Test</title>
+<span style="white-space:pre">    </span><meta charset="utf-8">
+<span style="white-space:pre">    </span><meta http-equiv="X-UA-Compatible" content="IE=edge">
+<span style="white-space:pre">    </span><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<span style="white-space:pre">    </span><meta name="author" content="sam">
+<span style="white-space:pre">    </span><script src="/static/js/jquery-1.11.3.min.js"></script>  <!-- 必要的js文件，jquery版本随意，1.4以上即可。 -->
+<span style="white-space:pre">    </span><script>
+    function getjson(){
+        $.getJSON('/json/json_tasklist/', {}, function($jsondata) {
+        //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+        //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+            var $str_html = "<table><tr><th>映像名称</th><th>PID</th><th>会话名</th><th>会话#</th><th>内存使用</th></tr>";
+            $.each($jsondata.arr, function($index, $val) {
+                $str_html += '<tr><td>'+$val[0]+'</td><td>'+$val[1]+'</td><td>'+$val[2]+'</td><td>'+$val[3]+'</td><td>'+$val[4]+'</td></tr>';
+            });
+            $str_html += "</table>";
+            $("#json").html($str_html); //生成一个table的html代码并展示出来。
+        });
+    }
+$(function(){
+        getjson();  //初始化获取数据
+        $("#start").attr({disabled: 'disabled'});
+        var $timebreak = 500; //单位:ms
+        var mytime = setInterval(function(){getjson()}, $timebreak); //通过setInterval设置超时执行函数
+        $("#start").click(function(event) {
+            mytime = setInterval(function(){getjson()}, $timebreak); //点击start按钮开始每$timebreak毫秒刷新json的数据
+            $("#start").attr({disabled: 'disabled'});
+            $("#stop").removeAttr('disabled');
+        });
+        $("#stop").click(function(event) {
+            clearInterval(mytime); //清除setInterval设置达到停止计数器的效果
+            $("#stop").attr({disabled: 'disabled'});
+            $("#start").removeAttr('disabled');
+        });
+
+})
+</script>
+</head>
+<body>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <p id="json">tasklist</p>
+</body>
+</html>

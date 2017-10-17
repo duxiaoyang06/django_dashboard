@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<meta http-equiv="refresh" content="30">
+<body>
+<head>
+
+</head>
+order_id|order_no|pin|name|email|telephone|status_code|total_amount|vas_amount|cp_code|cp_amount|freight_amount|pay_amount|create_time|update_time|order_remark|remark|cancel_remark|pay_type|detail_address1
+|detail_address2|city|state|zip|IDnumber|country|promot_discount_amount|item_qtty|source|source_version|spu|sku|nickname|login_email
+<hr>
+{% for item in detail%}
+{% for i in  item  %}
+{{i}} | 
+{% endfor %}
+<hr>
+{% endfor %}
+
+</body>
+</html>

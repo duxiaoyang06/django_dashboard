@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<meta http-equiv="refresh" content="90">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<body>
+<head>
+
+</head>
+
+<div id="main" style="height:300px"></div>
+
+<script src="../../static/js/echarts.source.js"></script>
+
+
+<script type="text/javascript">
+
+
+
+var myChart = echarts.init(document.getElementById('main'));
+var day=[];
+var count=[];
+option = {
+    title : {
+        text: '用户',
+        subtext: '用户走势'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['近7天用户增长走势']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : this.day
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            axisLabel : {
+                formatter: '{value} '
+            }
+        }
+    ],
+    series : [
+        {
+            name:'当天新增用户量',
+            type:'line',
+            data:this.count,
+            markPoint : {
+                data : [
+                    {type : 'max', name: '最大值'},
+                    {type : 'min', name: '最小值'}
+                ]
+            }
+        }
+    ]
+};
+
+function setData(dayx,countx){
+    option.xAxis[0].data=dayx;
+    option.series[0].data=countx;
+    myChart.setOption(option);
+}
+
+
+
+</script>
+
+
+<img border="0" src="../../static/img/log.gif" style="display:none" align="" width="15" height="15"
+     onerror="setData({{day}},{{count}})">
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Motif数据统计分析</title>
+
+    <link href="/static/assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/static/assets/css/font-awesome.css" rel="stylesheet"/>
+    <link href="/static/assets/css/date.css" rel="stylesheet">
+    <link href="/static/assets/css/date-ui.css" rel="stylesheet">
+    <link href="/static/assets/css/custom-styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="wrapper">
+    <!--存放共用的 header和nav的容器-->
+    <div class="common-parts">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Motif 数据统计分析</a>
+            </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-cogs"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">中文</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">English</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- left nav  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a class="item-home" href="index.html"><i class="fa fa-lg fa-home"></i>Home</a>
+                    </li>
+                    <li>
+                        <a href="designer.html" class="item-designer"><i class="fa fa-desktop"></i>设计师</a>
+                    </li>
+                    <li>
+                        <a href="product.html" class="item-product"><i class="fa fa-lg fa-qrcode"></i>商品</a>
+                    </li>
+                    <li>
+                        <a href="flow.html" class="item-flow"><i class="fa fa-bar-chart-o"></i>流量</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- nav side  -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <!-- <div class="row">
+                 <div class="col-md-12">
+                     <h1 class="page-header">
+                         我是这个页面的标题 <small>小标题</small>
+                     </h1>
+                 </div>
+             </div>-->
+            <!--数据概览-->
+            <div class="summaryTable">
+                <table class="table">
+                    <tr>
+                        <td></td>
+                        <td>成交金额$</td>
+                        <td>订单</td>
+                        <td>注册用户</td>
+                        <td>IOS-日活</td>
+                        <td>Android-日活</td>
+                        <td>H5-UV</td>
+                        <td>PC-UV</td>
+                    </tr>
+                    <tr>
+                        <td>昨天</td>
+                        <td class="old-amount"></td>
+                        <td class="old-order"></td>
+                        <td class="old-user"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="success today">
+                        <td>今天</td>
+                        <td class="today-amount"></td>
+                        <td class="today-order"></td>
+                        <td class="today-user"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <!--成交金额 折线图-->
+            <div class="row">
+                <div class="col-md-12 item-header">
+                    <span class="tit">成交金额</span>
+                    <input type="text" value="Last 7 days" id="dateInput-amount"/>
+                    <button type="button" class="btn btn-info queryBtn queryBtn-amount">查 询</button>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <ul class="left-message">
+                        <li>总金额：<span class="all-tm"></span></li>
+                        <li>IOS：<span class="ios-tm"></span></li>
+                        <li>Android：<span class="android-tm"></span></li>
+                        <li>H5：<span class="h5-tm"></span></li>
+                        <li>PC：<span class="pc-tm"></span></li>
+                    </ul>
+                </div>
+                <div class="col-md-10 col-sm-12 col-xs-12">
+                    <div id="amount_chart"></div>
+                </div>
+            </div>
+            <!--支付订单数 折线图-->
+            <div class="row">
+                <div class="col-md-12 item-header">
+                    <span class="tit">支付订单数</span>
+                    <input type="text" value="Last 7 days" id="dateInput-count"/>
+                    <button type="button" class="btn btn-info queryBtn queryBtn-orderCount">查 询</button>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <ul class="left-message">
+                        <li>总订单：<span class="all-count"></span></li>
+                        <li>IOS：<span class="ios-count"></span></li>
+                        <li>Android：<span class="android-count"></span></li>
+                        <li>H5：<span class="h5-count"></span></li>
+                        <li>PC：<span class="pc-count"></span></li>
+                    </ul>
+                </div>
+                <div class="col-md-10 col-sm-12 col-xs-12">
+                    <div id="orderCount_chart"></div>
+                </div>
+            </div>
+
+            <!--用户注册 饼状图-->
+            <div class="row">
+                <div class="col-md-12 item-header">
+                    <span class="tit">注册用户</span>
+                    <input type="text" value="Last 7 days" id="dateInput-user"/>
+                    <button type="button" class="btn btn-info queryBtn queryBtn-userCount">查 询</button>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <ul class="left-message">
+                        <li>注册数：<span class="user_reg_all"></span></li>
+                        <li>IOS：<span class="user_reg_ios"></span></li>
+                        <li>Android：<span class="user_reg_android"></span></li>
+                        <li>H5：<span class="user_reg_h5"></span></li>
+                        <li>PC：<span class="user_reg_pc"></span></li>
+                    </ul>
+                </div>
+                <div class="col-md-10 col-sm-12 col-xs-12">
+                    <div id="userRegCount_chart"></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <ul class="left-message">
+                        <li>Total：<span class="user-all"></span></li>
+                        <li>Email：<span class="user-email"></span></li>
+                        <li>Facebook：<span class="user-fb"></span></li>
+                        <li>Google：<span class="user-gg"></span></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div id="user_chart"></div>
+                </div>
+
+                <!--<div class="col-md-2 col-sm-12 col-xs-12">-->
+                <!--<ul class="left-message">-->
+                <!--<li>注册数量：<span class="user-reg"></span></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 item-header">
+                    <span class="tit">sku销量排序</span>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div id="skuRank_table"></div>
+                </div>
+                <div class="">
+
+                    <span class="skuRank"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS Scripts-->
+<script src="/static/assets/js/jquery-1.11.3.min.js"></script>
+<script src="/static/assets/js/bootstrap.min.js"></script>
+<script src="/static/assets/js/echarts.min.js"></script>
+
+<script src="/static/assets/js/jquery-ui-1.7.1.custom.min.js"></script>
+<script src="/static/assets/js/daterangepicker.jQuery.js"></script>
+<!--<script src="/static/assets/js/mycommon.js"></script>-->
+<!--index 页面的js-->
+<script src="/static/assets/js/index-script.js"></script>
+
+
+</body>
+
+</html>

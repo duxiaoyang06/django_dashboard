@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+<head>
+    <title>Demo CSS Table Price Hosting Plan</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" href="http://www.dota2.com/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <link href="/static/css/global.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/leaderboards_external.css" rel="stylesheet" type="text/css">
+    <title>Dota 2 - 排行榜</title>
+
+</head>
+
+<div>
+    <div id="skip">
+        <script language="Javascript" type="text/javascript">
+        alert(document.referrer.indexOf("mreport"));
+        if(document.referrer.indexOf("mreport")>-1)
+        {
+            skip.innerHTML="<a href=\"http://127.0.0.1:8000/mreport\" target=\"_blank\">点我到统计页面</a>"
+        }
+
+        </script>
+    </div>
+    <div id=" outerContainer1" class="outerContainer" style="float:left">
+
+
+        <div id="contentContainer1" class="contentContainer">
+            <div id="content1" class="content">
+                <img id="globe1" class="globe" src="/static/img/globe.png" width="339" height="339"
+                     border="0">
+                <br>
+                <h1>spu点击排行榜</h1>
+                <br><br><br><br><br>
+                <!--<h2>天梯前200名玩家</h2>-->
+                <div style="position:relative;z-index:2;">
+
+                    <div id="leaderboard_status1" class="leaderboard_status" style="height:60px">
+                        <script language="Javascript" type="text/javascript">
+                        var n = new Date().getTime()+ 1 * 24 * 60 * 60 * 1000;
+                        var result = new Date(n);
+                        leaderboard_status1.innerHTML="更新时间："+new Date().toLocaleDateString()+"上午8:00:00<br>"+"下次更新时间："+result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate()+"上午8:00:00<br>"
+                        </script>
+
+                    </div>
+
+                    <table style="position:relative;z-index:2;margin:0 auto;" border="2"
+                           bordercolor="#3b3a38"
+                           cellspacing="0" cellpadding="2">
+
+                        <tbody>
+                        <tr bgcolor="#181818">
+                            <td align="center">序号</td>
+                            <td align="center">spu</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">名称</span>
+                            </td>
+                            <td>
+                                <div>图片
+                                </div>
+                            </td>
+                            <td align="center" width="70">spu点击量</td>
+                        </tr>
+                        {% for item in jsondata.spu_top %}
+
+
+                        {% if forloop.counter|divisibleby:"2" %}
+                        <tr bgcolor="#181818">
+                            {% else %}
+                        <tr bgcolor="#202020">
+                            {% endif %}
+                            <td align="center">{{ forloop.counter }}</td>
+                            <td align="center">{{ item.0 }}</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">{{ item.1 }}</span>
+                            </td>
+                            <td>
+                                <div style="float: right;"><img src="http://image.motif.me/n4/{{ item.2 }}"
+                                                                height="70"
+                                                                width="70">
+                                </div>
+                            </td>
+                            <td align="center">{{ item.3 }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div id="outerContainer2" class="outerContainer" style="float:left">
+        <div id="contentContainer2" class="contentContainer">
+            <div id="content2" class="content">
+                <img id="globe2" class="globe" src="/static/img/globe.png" width="339" height="339"
+                     border="0">
+                <br>
+                <h1>pv展示排行榜</h1>
+                <br><br><br><br><br>
+                <!--<h2>天梯前200名玩家</h2>-->
+                <div style="position:relative;z-index:2;">
+
+                    <div id="leaderboard_status2" class="leaderboard_status" style="height:60px">
+                        <script language="Javascript" type="text/javascript">
+                        var n = new Date().getTime()+ 1 * 24 * 60 * 60 * 1000;
+                        var result = new Date(n);
+                        leaderboard_status2.innerHTML="更新时间："+new Date().toLocaleDateString()+"上午8:00:00<br>"+"下次更新时间："+result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate()+"上午8:00:00<br>"
+
+
+
+
+
+
+
+
+
+
+                        </script>
+                    </div>
+
+                    <table style="position:relative;z-index:2;margin:0 auto;" border="2"
+                           bordercolor="#3b3a38"
+                           cellspacing="0" cellpadding="2">
+
+                        <tbody>
+                        <tr bgcolor="#181818">
+                            <td align="center">序号</td>
+                            <td align="center">spu</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">名称</span>
+                            </td>
+                            <td>
+                                <div>图片
+                                </div>
+                            </td>
+                            <td align="center" width="70">pv展示量</td>
+                        </tr>
+                        {% for item in jsondata.pv_top %}
+                        {% if forloop.counter|divisibleby:"2" %}
+                        <tr bgcolor="#181818">
+                            {% else %}
+                        <tr bgcolor="#202020">
+                            {% endif %}
+                            <td align="center">{{ forloop.counter }}</td>
+                            <td align="center">{{ item.0 }}</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">{{ item.1 }}</span>
+                            </td>
+                            <td>
+                                <div style="float: right;"><img src="http://image.motif.me/n4/{{ item.2 }}"
+                                                                height="70"
+                                                                width="70">
+                                </div>
+                            </td>
+                            <td align="center">{{ item.3 }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="outerContainer3" class="outerContainer" style="float:left">
+        <div id="contentContainer3" class="contentContainer">
+            <div id="content3" class="content">
+                <img id="globe3" class="globe" src="/static/img/globe.png" width="339" height="339"
+                     border="0">
+                <br>
+                <h1>daily点击排行榜</h1>
+                <br><br><br><br><br>
+                <!--<h2>天梯前200名玩家</h2>-->
+                <div style="position:relative;z-index:2;">
+
+                    <div id="leaderboard_status3" class="leaderboard_status" style="height:60px">
+                        <script language="Javascript" type="text/javascript">
+                        var n = new Date().getTime()+ 1 * 24 * 60 * 60 * 1000;
+                        var result = new Date(n);
+                        leaderboard_status3.innerHTML="更新时间："+new Date().toLocaleDateString()+"上午8:00:00<br>"+"下次更新时间："+result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate()+"上午8:00:00<br>"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </script>
+                    </div>
+
+                    <table style="position:relative;z-index:2;margin:0 auto;" border="2"
+                           bordercolor="#3b3a38"
+                           cellspacing="0" cellpadding="2">
+
+                        <tbody>
+                        <tr bgcolor="#181818">
+                            <td align="center">序号</td>
+                            <td align="center">类型</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">名称</span>
+                            </td>
+                            <td>
+                                <div>图片
+                                </div>
+                            </td>
+                            <td align="center" width="70">daily点击量</td>
+                        </tr>
+                        {% for item in jsondata.daily_top %}
+                        {% if forloop.counter|divisibleby:"2" %}
+                        <tr bgcolor="#181818">
+                            {% else %}
+                        <tr bgcolor="#202020">
+                            {% endif %}
+                            <td align="center">{{ forloop.counter }}</td>
+                            <td align="center">{{ item.0 }}</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">{{ item.1 }}</span>
+                            </td>
+                            <td>
+                                <div style="float: right;"><img src="http://image.motif.me/n4/{{ item.2 }}"
+                                                                height="70"
+                                                                width="70">
+                                </div>
+                            </td>
+                            <td align="center">{{ item.5 }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+</body>
+
+
+</html>

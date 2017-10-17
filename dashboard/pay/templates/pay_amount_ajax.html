@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+<head>
+    <title>Demo CSS Table Price Hosting Plan</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="shortcut icon" href=http://www.freshdesignweb.com/wp-content/themes/fv24/images/icon.ico/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/styles.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/demo.css" media="all"/>
+    <script src="/static/js/jquery-1.11.3.min.js"></script>  <!-- 必要的js文件，jquery版本随意，1.4以上即可。 -->
+    <script src="/static/js/tools.js"></script>
+
+    <script type="text/javascript">
+            var payamount;
+            if(currentLang.indexOf("en") > -1 )
+            {
+                payamount=" Actually Amount Paid in 2 Days"
+            }
+            else{
+                payamount="&nbsp;&nbsp;两日内实际支付金额"
+            }
+
+    </script>
+</head>
+
+<script type="text/javascript">
+var all_amount;
+var today_amount;
+ function getjson(){
+
+        $.getJSON('/ajax/pay/amount', {}, function($jsondata) {
+            //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+            //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+            var $str_html = "<table><tr><th>映像名称</th><th>PID</th><th>会话名</th><th>会话#</th><th>内存使用</th></tr>";
+
+
+            this.today_amount=$jsondata.today_amount;
+
+            document.getElementById("zhifu").innerHTML = '$'+this.today_amount;
+        });
+    }
+$(function(){
+        getjson();  //初始化获取数据
+        $("#start").attr({disabled: 'disabled'});
+        var $timebreak = 2000; //单位:ms
+        var mytime = setInterval(function(){getjson()}, $timebreak); //通过setInterval设置超时执行函数
+        $("#start").click(function(event) {
+            mytime = setInterval(function(){getjson()}, $timebreak); //点击start按钮开始每$timebreak毫秒刷新json的数据
+            $("#start").attr({disabled: 'disabled'});
+            $("#stop").removeAttr('disabled');
+        });
+        $("#stop").click(function(event) {
+            clearInterval(mytime); //清除setInterval设置达到停止计数器的效果
+            $("#stop").attr({disabled: 'disabled'});
+            $("#start").removeAttr('disabled');
+        });
+
+})
+
+</script>
+
+<div class="container">
+
+    <header>
+        <div id="fdw-pricing-table" style=" width:100%;">
+
+
+            <div class="plan plan4" style=" width:80%;">
+                <div class="header">
+                    <script type="text/javascript">
+                        document.write(payamount)
+
+                    </script>
+                </div>
+                <div class="price" id="zhifu">${{ today_amount }}</div>
+                <!-- <div class="monthly">per month</div> -->
+
+            </div>
+        </div>
+    </header><!-- end header -->
+</div>
+
+
+</body>
+</html>

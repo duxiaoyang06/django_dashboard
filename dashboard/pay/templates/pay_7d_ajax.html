@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <div id="main" style="height:300px"></div>
+
+    <span style="white-space:pre">    </span><title>RealTime Test</title>
+    <span style="white-space:pre">    </span>
+    <meta charset="utf-8">
+    <span style="white-space:pre">    </span>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <span style="white-space:pre">    </span>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <span style="white-space:pre">    </span>
+    <meta name="author" content="sam">
+    <span style="white-space:pre">    </span>
+    <script src="/static/js/jquery-1.11.3.min.js"></script>  <!-- 必要的js文件，jquery版本随意，1.4以上即可。 -->
+    <span style="white-space:pre">    </span>
+
+    <script src="../../static/js/echarts.source.js"></script>
+    <script type="text/javascript">
+var myChart = echarts.init(document.getElementById('main'));
+var day=[];
+var amount=[];
+var day2=[];
+var count=[];
+var option = {
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['GMV','订单数']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true},
+            magicType : {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    xAxis : [
+        {
+            type : 'category',
+            position: 'bottom',
+            boundaryGap: true,
+            axisLine : {    // 轴线
+                show: true,
+                lineStyle: {
+                    color: 'green',
+                    type: 'solid',
+                    width: 2
+                }
+            },
+            axisTick : {    // 轴标记
+                show:true,
+                length: 10,
+                lineStyle: {
+                    color: 'red',
+                    type: 'solid',
+                    width: 2
+                }
+            },
+            axisLabel : {
+                show:true,
+                interval: 'auto',    // {number}
+                rotate: 45,
+                margin: 8,
+                formatter: '{value}',
+                textStyle: {
+                    color: 'blue',
+                    fontFamily: 'sans-serif',
+                    fontSize: 15,
+                    fontStyle: 'italic',
+                    fontWeight: 'bold'
+                }
+            },
+            splitLine : {
+                show:true,
+                lineStyle: {
+                    color: '#483d8b',
+                    type: 'dashed',
+                    width: 1
+                }
+            },
+            splitArea : {
+                show: true,
+                areaStyle:{
+                    color:['rgba(144,238,144,0.3)','rgba(135,200,250,0.3)']
+                }
+            },
+            data :this.day
+        },
+        {
+            type : 'category',
+            data : this.day2
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            position: 'left',
+            //min: 0,
+            //max: 300,
+            //splitNumber: 5,
+            boundaryGap: [0,0.1],
+            axisLine : {    // 轴线
+                show: true,
+                lineStyle: {
+                    color: 'red',
+                    type: 'dashed',
+                    width: 2
+                }
+            },
+            axisTick : {    // 轴标记
+                show:true,
+                length: 10,
+                lineStyle: {
+                    color: 'green',
+                    type: 'solid',
+                    width: 2
+                }
+            },
+            axisLabel : {
+                show:true,
+                interval: 'auto',    // {number}
+                rotate: -45,
+                margin: 18,
+                formatter: '{value} $',    // Template formatter!
+                textStyle: {
+                    color: '#1e90ff',
+                    fontFamily: 'verdana',
+                    fontSize: 10,
+                    fontStyle: 'normal',
+                    fontWeight: 'bold'
+                }
+            },
+            splitLine : {
+                show:true,
+                lineStyle: {
+                    color: '#483d8b',
+                    type: 'dotted',
+                    width: 2
+                }
+            },
+            splitArea : {
+                show: true,
+                areaStyle:{
+                    color:['rgba(205,92,92,0.3)','rgba(255,215,0,0.3)']
+                }
+            }
+        },
+        {
+            type : 'value',
+            splitNumber: 10,
+            axisLabel : {
+                formatter: function (value) {
+                    // Function formatter
+                    return value + '单'
+                }
+            },
+            splitLine : {
+                show: false
+            }
+        }
+    ],
+    series : [
+        {
+            name: 'GMV',
+            type: 'line',
+            yAxisIndex: 0,
+            data:this.amount
+        },
+        {
+            name:'订单数',
+            type: 'line',
+            yAxisIndex: 1,
+            data: this.count
+        }
+    ]
+};
+
+
+function setData(dayx,amountx,dayx2,countx){
+    option.xAxis[0].data=dayx;
+    option.xAxis[1].data=dayx2;
+    option.series[0].data=amountx;
+    option.series[1].data=countx;
+    myChart.setOption(option);
+}
+
+    function getjson(){
+
+        $.getJSON('/ajax/order/7d', {}, function($jsondata) {
+            //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+            //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+                var $str_html = "<table><tr><th>映像名称</th><th>PID</th><th>会话名</th><th>会话#</th><th>内存使用</th></tr>";
+
+
+            console.log($jsondata);
+            option.xAxis[0].data=$jsondata.day;
+            option.xAxis[1].data=$jsondata.day;
+            option.series[0].data=$jsondata.amount;
+            option.series[1].data=$jsondata.count;
+            console.log(option);
+            myChart.setOption(option);
+
+        });
+    }
+$(function(){
+        getjson();  //初始化获取数据
+        $("#start").attr({disabled: 'disabled'});
+        var $timebreak = 2000; //单位:ms
+        var mytime = setInterval(function(){getjson()}, $timebreak); //通过setInterval设置超时执行函数
+        $("#start").click(function(event) {
+            mytime = setInterval(function(){getjson()}, $timebreak); //点击start按钮开始每$timebreak毫秒刷新json的数据
+            $("#start").attr({disabled: 'disabled'});
+            $("#stop").removeAttr('disabled');
+        });
+        $("#stop").click(function(event) {
+            clearInterval(mytime); //清除setInterval设置达到停止计数器的效果
+            $("#stop").attr({disabled: 'disabled'});
+            $("#start").removeAttr('disabled');
+        });
+
+})
+
+
+
+
+
+    </script>
+</head>
+<body>
+<!--<button id="start">start</button>-->
+<!--<button id="stop">stop</button>-->
+<!--<p id="json">tasklist</p>-->
+</body>
+</html>

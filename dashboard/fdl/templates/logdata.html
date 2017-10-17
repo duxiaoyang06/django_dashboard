@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+<head>
+    <title>Demo CSS Table Price Hosting Plan</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" href="http://www.dota2.com/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <link href="/static/css/global.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/leaderboards_external.css" rel="stylesheet" type="text/css">
+    <title>ranklist</title>
+</head>
+
+<div>
+    <div id="skip">
+        <script language="Javascript" type="text/javascript">
+        if(document.referrer.indexOf("mreport")>-1)
+        {
+            skip.innerHTML="<a href=\"/mreport\" target=\"_blank\">click me skip to cartogram</a>"
+        }
+        </script>
+    </div>
+
+    <div id=" outerContainer1" class="outerContainer" style="float:left">
+        <div id="contentContainer1" class="contentContainer">
+            <div id="content1" class="content">
+                <img id="globe1" class="globe" src="/static/img/globe.png" width="339" height="339"
+                     border="0">
+                <br>
+                <h1>spu click rank</h1>
+                <br><br><br><br><br>
+                <!--<h2>天梯前200名玩家</h2>-->
+                <div style="position:relative;z-index:2;">
+
+                    <div id="leaderboard_status1" class="leaderboard_status" style="height:60px">
+                        <script language="Javascript" type="text/javascript">
+                        var n = new Date().getTime()+ 1 * 24 * 60 * 60 * 1000;
+                        var result = new Date(n);
+                        leaderboard_status1.innerHTML="Update at："+new Date().toLocaleDateString()+" 8:00:00 AM<br>"+"Next Update at："+result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate()+" 8:00:00 AM<br>"
+
+
+
+                        </script>
+
+                    </div>
+
+                    <table style="position:relative;z-index:2;margin:0 auto;" border="2"
+                           bordercolor="#3b3a38"
+                           cellspacing="0" cellpadding="2">
+
+                        <tbody>
+                        <tr bgcolor="#181818">
+                            <td align="center">No.</td>
+                            <td align="center">spu</td>
+                            <td align="left" style="overflow:hidden" width="320">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">Name</span>
+                            </td>
+                            <td>
+                                <div>Image</div>
+                            </td>
+                            <td align="center" width="110">spu click total</td>
+
+                        </tr>
+                        {% for item in jsondata.spu_top %}
+
+
+                        {% if forloop.counter|divisibleby:"2" %}
+                        <tr bgcolor="#181818">
+                            {% else %}
+                        <tr bgcolor="#202020">
+                            {% endif %}
+                            <td align="center">{{ forloop.counter }}</td>
+                            <td align="center">{{ item.0 }}</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">{{ item.1 }}</span>
+                            </td>
+                            <td>
+                                <div style="float: right;"><img src="http://image.motif.me/n4/{{ item.2 }}"
+                                                                height="70"
+                                                                width="70">
+                                </div>
+                            </td>
+                            <td align="center">{{ item.3 }}</td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div id="outerContainer2" class="outerContainer" style="float:left">
+        <div id="contentContainer2" class="contentContainer">
+            <div id="content2" class="content">
+                <img id="globe2" class="globe" src="/static/img/globe.png" width="339" height="339"
+                     border="0">
+                <br>
+                <h1>pv show times rank</h1>
+                <br><br><br><br><br>
+                <!--<h2>天梯前200名玩家</h2>-->
+                <div style="position:relative;z-index:2;">
+
+                    <div id="leaderboard_status2" class="leaderboard_status" style="height:60px">
+                        <script language="Javascript" type="text/javascript">
+                        var n = new Date().getTime()+ 1 * 24 * 60 * 60 * 1000;
+                        var result = new Date(n);
+                        leaderboard_status2.innerHTML="Update at："+new Date().toLocaleDateString()+" 8:00:00 AM<br>"+"Next Update at："+result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate()+" 8:00:00 AM<br>"
+
+
+
+                        </script>
+                    </div>
+
+                    <table style="position:relative;z-index:2;margin:0 auto;" border="2"
+                           bordercolor="#3b3a38"
+                           cellspacing="0" cellpadding="2">
+
+                        <tbody>
+                        <tr bgcolor="#181818">
+                            <td align="center">No.</td>
+                            <td align="center">spu</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">Name</span>
+                            </td>
+                            <td>
+                                <div>Image
+                                </div>
+                            </td>
+                            <td align="center" width="70">pv show times</td>
+                            <td align="center" width="150">new click yesterday</td>
+                            <td align="center" width="150">rank change yesterday</td>
+                        </tr>
+                        {% for item in jsondata.pv_top %}
+                        {% if forloop.counter|divisibleby:"2" %}
+                        <tr bgcolor="#181818">
+                            {% else %}
+                        <tr bgcolor="#202020">
+                            {% endif %}
+                            <td align="center">{{ forloop.counter }}</td>
+                            <td align="center">{{ item.0 }}</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">{{ item.1 }}</span>
+                            </td>
+                            <td>
+                                <div style="float: right;"><img src="http://image.motif.me/n4/{{ item.2 }}"
+                                                                height="70"
+                                                                width="70">
+                                </div>
+                            </td>
+                            <td align="center">{{ item.3 }}</td>
+                            <td align="center">{{ item.7 }}</td>
+                            <td align="center">
+                                <script language="Javascript" type="text/javascript">
+                                        if({{ item.8 }}>0)
+                                        {document.write("<img src=\"/static/img/up.png\">{{ item.8 }}")}
+                                        else if({{ item.8 }}<0)
+                                        {
+                                        var a=Math.abs({{ item.8 }});
+                                        document.write("<img src=\"/static/img/down.png\">"+a)}
+                                        else if({{ item.8 }}==0)
+                                        {document.write("-")}
+
+
+                                </script>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="outerContainer3" class="outerContainer" style="float:left">
+        <div id="contentContainer3" class="contentContainer">
+            <div id="content3" class="content">
+                <img id="globe3" class="globe" src="/static/img/globe.png" width="339" height="339"
+                     border="0">
+                <br>
+                <h1>hot daily in 3 days</h1>
+                <br><br><br><br><br>
+                <!--<h2>天梯前200名玩家</h2>-->
+                <div style="position:relative;z-index:2;">
+
+                    <div id="leaderboard_status3" class="leaderboard_status" style="height:60px">
+                        <script language="Javascript" type="text/javascript">
+                        var n = new Date().getTime()+ 1 * 24 * 60 * 60 * 1000;
+                        var result = new Date(n);
+                        leaderboard_status3.innerHTML="Update at："+new Date().toLocaleDateString()+" 8:00:00 AM<br>"+"Next Update at："+result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate()+" 8:00:00 AM<br>"
+
+
+
+                        </script>
+                    </div>
+
+                    <table style="position:relative;z-index:2;margin:0 auto;" border="2"
+                           bordercolor="#3b3a38"
+                           cellspacing="0" cellpadding="2">
+
+                        <tbody>
+                        <tr bgcolor="#181818">
+                            <td align="center">No.</td>
+                            <td align="center">Type</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">Name</span>
+                            </td>
+                            <td>
+                                <div>Image
+                                </div>
+                            </td>
+                            <td align="center" width="170">new click in 3 days</td>
+                            <td align="center" width="170">hot rank change in 3 days</td>
+                        </tr>
+                        {% for item in jsondata.daily_top %}
+                        {% if forloop.counter|divisibleby:"2" %}
+                        <tr bgcolor="#181818">
+                            {% else %}
+                        <tr bgcolor="#202020">
+                            {% endif %}
+                            <td align="center">{{ forloop.counter }}</td>
+                            <td align="center">{{ item.0 }}</td>
+                            <td align="left" style="overflow:hidden" width="300">&nbsp;&nbsp;<span
+                                    class="team_tag"></span><span class="player_name">{{ item.1 }}</span>
+                            </td>
+                            <td>
+                                <div style="float: right;"><img src="http://image.motif.me/n4/{{ item.2 }}"
+                                                                height="70"
+                                                                width="70">
+                                </div>
+                            </td>
+                            <td align="center">{{ item.5 }}</td>
+                            <td align="center">
+
+                                <script language="Javascript" type="text/javascript">
+                                        if({{ item.6 }}>0)
+                                        {document.write("<img src=\"/static/img/up.png\">{{ item.6 }}")}
+                                        else if({{ item.6 }}<0)
+                                        {
+                                        var a=Math.abs({{ item.6 }});
+                                        document.write("<img src=\"/static/img/down.png\">"+a)}
+                                        else if({{ item.6 }}==0)
+                                        {document.write("-")}
+
+
+                                </script>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+
+</body>
+
+
+</html>

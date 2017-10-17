@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <div id="main" style="height:300px"></div>
+
+    <span style="white-space:pre">    </span><title>RealTime Test</title>
+    <span style="white-space:pre">    </span>
+    <meta charset="utf-8">
+    <span style="white-space:pre">    </span>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <span style="white-space:pre">    </span>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <span style="white-space:pre">    </span>
+    <meta name="author" content="sam">
+    <span style="white-space:pre">    </span>
+    <script src="/static/js/jquery-1.11.3.min.js"></script>  <!-- 必要的js文件，jquery版本随意，1.4以上即可。 -->
+    <span style="white-space:pre">    </span>
+    <script src="/static/js/tools.js"></script>
+
+    <script type="text/javascript">
+            var order_count;
+            var transactions;
+            if(currentLang.indexOf("en") > -1 )
+            {
+                order_count="Order Counts"
+                transactions="orders"
+            }
+            else
+            {
+                order_count="订单数"
+                transactions="单"
+            }
+
+
+    </script>
+
+    <script src="../../static/js/echarts.source.js"></script>
+    <script type="text/javascript">
+var myChart = echarts.init(document.getElementById('main'));
+var day=[];
+var count=[];
+option = {
+    title : {
+        text: 'Follow Trend',
+        subtext: 'recent 60 days'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['trend line']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : this.day
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            axisLabel : {
+                formatter: '{value}'
+            }
+        }
+    ],
+    series : [
+        {
+            name:'trend line',
+            type:'line',
+            data:this.count,
+            markPoint : {
+                data : [
+                    {type : 'max', name: 'max'},
+                    {type : 'min', name: 'min'}
+                ]
+            }
+        }
+
+    ]
+};
+
+
+    function getjson(){
+        $.getJSON('/ajax/designer/trend/'+{{designerId}}, {}, function($jsondata) {
+            //通过http://localhost:8000/json/json_tasklist/页面获取json数据
+            //当然，通过Django template tag技术也可以使用"{{json_data}}"方式传入json数据，使用什么方式自己随意了。
+            console.log($jsondata);
+            option.xAxis[0].data=$jsondata.day;
+            option.series[0].data=$jsondata.follow_count;
+            console.log(option);
+            myChart.setOption(option);
+
+        });
+    }
+        getjson();  //初始化获取数据
+
+
+    </script>
+
+</head>
+<body>
+<!--<button id="start">start</button>-->
+<!--<button id="stop">stop</button>-->
+<!--<p id="json">tasklist</p>-->
+</body>
+</html>
